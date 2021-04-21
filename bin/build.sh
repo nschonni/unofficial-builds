@@ -31,6 +31,12 @@ fullversion="$1"
 decode "$fullversion"
 # see _decode_version for all of the magic variables now set and available for use
 
+if [ "$major" -lt 14 ]; then
+  pythonVersion="python2"
+else
+  pythonVersion="python3"
+fi
+
 # Point RELEASE_URLBASE to the Unofficial Builds server
 unofficial_release_urlbase="https://unofficial-builds.nodejs.org/download/${disttype}/"
 
@@ -82,7 +88,9 @@ for recipe in $recipes; do
   fi
 
   # each recipe logs to its own log file in the $thislogdir directory
-  docker run --rm \
+  docker run \
+    --env PYTHON_VERSION=$pythonVersion \
+    --rm \
     ${ccachemount} ${sourcemount} ${stagingmount} \
     "${image_tag_pfx}${recipe}" \
     "$unofficial_release_urlbase" "$disttype" "$customtag" "$datestring" "$commit" "$fullversion" "$source_url" \

@@ -11,7 +11,7 @@ RUN yum install -y epel-release \
          git \
          curl \
          make \
-         python \
+         $PYTHON_VERSION \
          ccache \
          xz-utils \
          devtoolset-8 \
